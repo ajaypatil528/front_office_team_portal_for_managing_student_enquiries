@@ -33,12 +33,11 @@ public class UserDtlsEntity {
 	private String accStatus;
 	
 	
-	/*
-	 * @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch =
-	 * FetchType.EAGER)
-	 * 
-	 * private List<StudentEnqEntity> enquiries;
-	 */
+	
+	  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch =
+	  FetchType.EAGER)
+	  private List<StudentEnqEntity> enquiries;
+	 
 	public Integer getUserId() {
 		return userId;
 	}
@@ -91,12 +90,15 @@ public class UserDtlsEntity {
 	}
 
 	
-	/*
-	 * public List<StudentEnqEntity> getEnquiries() { return enquiries; }
-	 * 
-	 * public void setEnquiries(List<StudentEnqEntity> enquiries) { this.enquiries =
-	 * enquiries; }
-	 */
+	
+	  public List<StudentEnqEntity> getEnquiries() { 
+		  return enquiries;
+	 }
+	  
+	  public void setEnquiries(List<StudentEnqEntity> enquiries) { 
+		  this.enquiries = enquiries;
+	 }
+	 
 	 
 	
 }

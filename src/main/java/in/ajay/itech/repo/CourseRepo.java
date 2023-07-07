@@ -1,5 +1,9 @@
 package in.ajay.itech.repo;
 
-public interface CourseRepo {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import in.ajay.itech.entity.CourseEntity;
+
+public interface CourseRepo extends JpaRepository<CourseEntity, Integer>{
 
 }

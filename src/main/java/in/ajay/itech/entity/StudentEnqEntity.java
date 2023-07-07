@@ -3,8 +3,15 @@ package in.ajay.itech.entity;
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
 
@@ -14,30 +21,37 @@ import lombok.Data;
 public class StudentEnqEntity {
 
 	@Id
-	private Integer userId;
+	@GeneratedValue
+	private Integer enqId;
 	
 	private Integer studentEnqID;
 	
 	private String studentName;
 	
-	private Integer studentPhone;
+	private Integer studentPhno;
 	
-	private String studentClassMode;
+	private String classMode;
 	
-	private String studentCourseName;
+	private String courseName;
 	
-	private String studentEnqStatus;
+	private String enqStatus;
 	
-	private LocalDate createdDate;
+	@CreationTimestamp
+	private LocalDate dateCreated;
 	
-	private LocalDate updatedDate;
+	@UpdateTimestamp
+	private LocalDate lastUpdated;
 
-	public Integer getUserId() {
-		return userId;
+	@ManyToOne
+	@JoinColumn(name="user_id")
+	private UserDtlsEntity user;
+
+	public Integer getEnqId() {
+		return enqId;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setEnqId(Integer enqId) {
+		this.enqId = enqId;
 	}
 
 	public Integer getStudentEnqID() {
@@ -56,52 +70,61 @@ public class StudentEnqEntity {
 		this.studentName = studentName;
 	}
 
-	public Integer getStudentPhone() {
-		return studentPhone;
+	public Integer getStudentPhno() {
+		return studentPhno;
 	}
 
-	public void setStudentPhone(Integer studentPhone) {
-		this.studentPhone = studentPhone;
+	public void setStudentPhno(Integer studentPhno) {
+		this.studentPhno = studentPhno;
 	}
 
-	public String getStudentClassMode() {
-		return studentClassMode;
+	public String getClassMode() {
+		return classMode;
 	}
 
-	public void setStudentClassMode(String studentClassMode) {
-		this.studentClassMode = studentClassMode;
+	public void setClassMode(String classMode) {
+		this.classMode = classMode;
 	}
 
-	public String getStudentCourseName() {
-		return studentCourseName;
+	public String getCourseName() {
+		return courseName;
 	}
 
-	public void setStudentCourseName(String studentCourseName) {
-		this.studentCourseName = studentCourseName;
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
 	}
 
-	public String getStudentEnqStatus() {
-		return studentEnqStatus;
+	public String getEnqStatus() {
+		return enqStatus;
 	}
 
-	public void setStudentEnqStatus(String studentEnqStatus) {
-		this.studentEnqStatus = studentEnqStatus;
+	public void setEnqStatus(String enqStatus) {
+		this.enqStatus = enqStatus;
 	}
 
-	public LocalDate getCreatedDate() {
-		return createdDate;
+	public LocalDate getDateCreated() {
+		return dateCreated;
 	}
 
-	public void setCreatedDate(LocalDate createdDate) {
-		this.createdDate = createdDate;
+	public void setDateCreated(LocalDate dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 
-	public LocalDate getUpdatedDate() {
-		return updatedDate;
+	public LocalDate getLastUpdated() {
+		return lastUpdated;
 	}
 
-	public void setUpdatedDate(LocalDate updatedDate) {
-		this.updatedDate = updatedDate;
+	public void setLastUpdated(LocalDate lastUpdated) {
+		this.lastUpdated = lastUpdated;
 	}
+
+	public UserDtlsEntity getUser() {
+		return user;
+	}
+
+	public void setUser(UserDtlsEntity user) {
+		this.user = user;
+	}
+	
 	
 }
