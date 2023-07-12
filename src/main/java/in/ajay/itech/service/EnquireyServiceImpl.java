@@ -3,6 +3,7 @@ package in.ajay.itech.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import in.ajay.itech.binding.DashboardResponse;
 import in.ajay.itech.binding.EnquiryForm;
 import in.ajay.itech.binding.EnquirySearchCriteria;
+import in.ajay.itech.constants.AppConstants;
 import in.ajay.itech.entity.CourseEntity;
 import in.ajay.itech.entity.EnqStatusEntity;
 import in.ajay.itech.entity.StudentEnqEntity;
@@ -115,7 +117,7 @@ public class EnquireyServiceImpl implements EnquiryService {
 		StudentEnqEntity enqEntity = new StudentEnqEntity();
 		BeanUtils.copyProperties(form, enqEntity);
 		
-		Integer userId = (Integer) session.getAttribute("userId");
+		Integer userId = (Integer) session.getAttribute(AppConstants.STR_USER_ID);
 		UserDtlsEntity userEntity = userDtlsRepo.findById(userId).get();
 		enqEntity.setUser(userEntity);
 		
@@ -123,6 +125,58 @@ public class EnquireyServiceImpl implements EnquiryService {
 		
 		
 		return true;
+	}
+
+	@Override
+	public List<StudentEnqEntity> getEnquiries() {
+
+		Integer userId = (Integer) session.getAttribute(AppConstants.STR_USER_ID);
+		Optional<UserDtlsEntity> findById = userDtlsRepo.findById(userId);
+		if(findById.isPresent()) {
+			UserDtlsEntity userDtlsEntity = findById.get();
+			List<StudentEnqEntity> enquiries = userDtlsEntity.getEnquiries();
+			return enquiries;
+		}
+		return null;
+	}
+
+	@Override
+	public List<StudentEnqEntity> getFilteredEnqs(EnquirySearchCriteria criteria, Integer userId) {
+
+		
+		Optional<UserDtlsEntity> findById = userDtlsRepo.findById(userId);
+		if(findById.isPresent()) {
+			UserDtlsEntity userDtlsEntity = findById.get();
+			List<StudentEnqEntity> enquiries = userDtlsEntity.getEnquiries();
+		
+			//filter logic (Java 8 feature "stream()")
+			
+			if(null != criteria.getCourseName() && !"".equals(criteria.getCourseName())) {
+				
+			enquiries =   enquiries.stream()
+						 .filter(e -> e.getCourseName()
+					     .equals(criteria.getCourseName()))
+						 .collect(Collectors.toList());
+			}
+			
+			if(null != criteria.getEnqStatus() && !"".equals(criteria.getEnqStatus())) {
+				
+				enquiries = enquiries.stream()
+							.filter(e -> e.getEnqStatus()
+							.equals(criteria.getEnqStatus()))
+							.collect(Collectors.toList());
+			}
+			
+			if(null!= criteria.getClassMode() && !"".equals(criteria.getClassMode())) {
+				
+				enquiries = enquiries.stream()
+							.filter(e -> e.getClassMode()
+							.equals(criteria.getClassMode()))
+							.collect(Collectors.toList());
+			}
+			return enquiries;
+		}
+		return null;
 	}
 
 }

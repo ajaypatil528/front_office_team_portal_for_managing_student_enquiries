@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import in.ajay.itech.binding.LoginForm;
 import in.ajay.itech.binding.SignUpForm;
 import in.ajay.itech.binding.UnlockForm;
+import in.ajay.itech.constants.AppConstants;
 import in.ajay.itech.entity.UserDtlsEntity;
 import in.ajay.itech.repo.UserDtlsRepo;
 import in.ajay.itech.util.EmailUtils;
@@ -34,17 +35,17 @@ public class UserServiceImpl implements UserService {
 					userDtlsRepo.findByEmailAndPwd(form.getEmail(), form.getPwd());
 		
 		if(entity == null) {
-			return "Invalid Credentials";
+			return AppConstants.INVALID_CREDENTIALS_MESSAGE;
 		}
 		
-		if(entity.getAccStatus().equals("LOCKED")) {
-			return "Your Account Locked";
+		if(entity.getAccStatus().equals(AppConstants.STR_LOCKED)) {
+			return AppConstants.STR_ACC_LOCKED_MESSAGE;
 		}
 		
 		//create session and store user data in session 
-		session.setAttribute("userId", entity.getUserId());
+		session.setAttribute(AppConstants.STR_USER_ID, entity.getUserId());
 		
-		return "success";
+		return AppConstants.STR_SUCCESS;
 	}
 
 	@Override
@@ -64,14 +65,14 @@ public class UserServiceImpl implements UserService {
 		entity.setPwd(tempPwd);
 		
 		//TODO: set account status as LOCKED
-		entity.setAccStatus("LOCKED");
+		entity.setAccStatus(AppConstants.STR_LOCKED);
 		
 		// TODO Insert record
 		userDtlsRepo.save(entity);
 		
 		// TODO send email to user to unlock the account
 		String to = form.getEmail();
-		String subject = "Unlock your Account";
+		String subject = AppConstants.UNLOCK_EMAIL_SUBJECT;
 		//String body = "<h1>Use below temporary password to unlock your account</h1>";
 		
 		StringBuffer body = new StringBuffer("");
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
 		if(entity.getPwd().equals(form.getTempPwd())) {
 			
 			entity.setPwd(form.getNewPwd());
-			entity.setAccStatus("Unlocked");
+			entity.setAccStatus(AppConstants.STR_UNLOCKED);
 			userDtlsRepo.save(entity);
 			return true;
 		} else {
@@ -135,7 +136,7 @@ public class UserServiceImpl implements UserService {
 		
 		// TODO: if record available send password to email and send success message
 		
-		String subject = "Recover Password";
+		String subject = AppConstants.RECOVER_PWD_EMAIL_SUBJECT;
 		String body = "Your password ::"+entity.getPwd();
 		
 		emailUtils.sendEmail(email, subject, body);

@@ -6,9 +6,9 @@ import in.ajay.itech.binding.UnlockForm;
 
 public interface UserService {
 
-	public boolean unlockAccount(UnlockForm form);
-	
 	public boolean signUp(SignUpForm form);
+	
+	public boolean unlockAccount(UnlockForm form);
 	
 	public String login(LoginForm form);
 	
