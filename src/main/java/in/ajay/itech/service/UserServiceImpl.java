@@ -34,6 +34,8 @@ public class UserServiceImpl implements UserService {
 		UserDtlsEntity entity = 
 					userDtlsRepo.findByEmailAndPwd(form.getEmail(), form.getPwd());
 		
+		//UserDtlsEntity entity1 = userDtlsRepo.findByNameEmailAndPhno(form.getName(), form.getEmail(), form.getPwd());
+		
 		if(entity == null) {
 			return AppConstants.INVALID_CREDENTIALS_MESSAGE;
 		}
